@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "635893242838",
+    "project_id": "photogram-a6efc",
+    "storage_bucket": "photogram-a6efc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:635893242838:android:a0c45e3e959423441b2277",
+        "android_client_info": {
+          "package_name": "com.example.photogram"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "635893242838-5ilj67ad7adm8obbfcjv3u9ulih4qpvh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1XvRjXhchxJRKv-t9894lLhwh0cNOZAk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "635893242838-5ilj67ad7adm8obbfcjv3u9ulih4qpvh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
