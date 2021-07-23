@@ -95,11 +95,16 @@ class RegisterPageState extends ModularState<RegisterPage, RegisterStore> {
       ),
       body: Observer(builder: (_) {
         if (store.loading) {
-          return Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [CircularProgressIndicator(), Text('Salvando os dados.')],
+          return Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                CircularProgressIndicator(),
+                Text('Salvando os dados.')
+              ],
+            ),
           );
         }
 

@@ -17,4 +17,5 @@ class _Routes {
   final EDIT_PROFILA = '/edit';
   final CHAT = '/chat';
   final TALK = '/talk';
+  final STORE = '/store';
 }

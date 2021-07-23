@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
 import 'package:photogram/app/constants.dart';
+import 'package:photogram/app/modules/profile/ChoosePicture_widget.dart';
 import 'package:photogram/app/modules/profile/PaddingWidget_widget.dart';
 import 'package:photogram/app/modules/profile/user_store.dart';
 
@@ -14,11 +16,13 @@ class EditPage extends StatefulWidget {
 }
 
 class EditPageState extends ModularState<EditPage, UserStore> {
-  late TextEditingController _nameController;
-  late FocusNode _nameFocusNode;
+  late final TextEditingController _nameController;
+  late final FocusNode _nameFocusNode;
 
-  late TextEditingController _bioController;
-  late FocusNode _bioFocusNode;
+  late final TextEditingController _bioController;
+  late final FocusNode _bioFocusNode;
+
+  late final ImagePicker _imagePicker;
 
   @override
   void initState() {
@@ -29,6 +33,8 @@ class EditPageState extends ModularState<EditPage, UserStore> {
 
     _bioController = TextEditingController(text: store.bio ?? '');
     _bioFocusNode = FocusNode();
+
+    _imagePicker = ImagePicker();
 
     reaction((_) => store.user, (_) {
       _nameController.text = store.user?.displayName ?? '';
@@ -79,17 +85,36 @@ class EditPageState extends ModularState<EditPage, UserStore> {
             height: 24,
           ),
           CircleAvatar(
-            radius: 40,
-            child: CircleAvatar(
-              radius: 38,
-              foregroundImage: AssetImage('assets/avatar_default.png'),
-            ),
+            radius: 39,
+            child: Observer(builder: (_) {
+              if (store.user!.photoURL != null &&
+                  store.user!.photoURL!.isNotEmpty) {
+                return CircleAvatar(
+                  radius: 38,
+                  foregroundImage: NetworkImage(store.user!.photoURL!),
+                );
+              }
+
+              return CircleAvatar(
+                radius: 38,
+                foregroundImage: AssetImage('assets/avatar_default.png'),
+              );
+            }),
           ),
           TextButton(
             child: Text(
               'Editar foto de perfil.',
             ),
-            onPressed: () {},
+            onPressed: () {
+              showModalBottomSheet(
+                  context: context,
+                  builder: (ctx) {
+                    return ChoosePictureWidget(
+                        picker: _imagePicker,
+                        ctx: ctx,
+                        function: store.updateProfilePicture);
+                  });
+            },
           ),
           _EditFild(
               label: 'Nome: ',
