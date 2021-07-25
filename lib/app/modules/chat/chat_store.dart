@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'package:async/async.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -62,23 +61,27 @@ abstract class _ChatStoreBase with Store {
         .where('sentTo', isEqualTo: friend.id)
         .get();
 
-    final chatSendByFriend = await firebaseFirestore
-        .collection('chat')
-        .where('sentBy', isEqualTo: firebaseAuth.currentUser!.uid)
-        .where('sentTo', isEqualTo: friend.id)
-        .get();
-
-    if (chatSendByMe.docs.isNotEmpty) {
+    if (chatSendByMe.size > 0) {
       return chatSendByMe.docs.last.id;
     }
 
-    if (chatSendByFriend.docs.isNotEmpty) {
+    final chatSendByFriend = await firebaseFirestore
+        .collection('chat')
+        .where('sentTo', isEqualTo: firebaseAuth.currentUser!.uid)
+        .where('sentBy', isEqualTo: friend.id)
+        .get();
+
+    if (chatSendByFriend.size > 0) {
       return chatSendByFriend.docs.last.id;
     }
 
     final newChat = firebaseFirestore.collection('chat').doc();
 
     newChat.set({
+      'owners': [
+        firebaseAuth.currentUser!.uid,
+        friend.id,
+      ],
       'sentBy': firebaseAuth.currentUser!.uid,
       'sentTo': friend.id,
       'nameSentBy': firebaseAuth.currentUser!.displayName,
@@ -93,22 +96,14 @@ abstract class _ChatStoreBase with Store {
   }
 
   @computed
-  Stream<QuerySnapshot> get talks {
-    final sendBy = firebaseFirestore
+  get talksAll {
+    final sentBy = firebaseFirestore
         .collection('chat')
-        .where('sentBy', isEqualTo: firebaseAuth.currentUser!.uid)
+        .where('owners', arrayContainsAny: [firebaseAuth.currentUser!.uid])
         .orderBy('dateLastMessage', descending: true)
         .snapshots();
 
-    final sendTo = firebaseFirestore
-        .collection('chat')
-        .where('sentTo', isEqualTo: firebaseAuth.currentUser!.uid)
-        .orderBy('dateLastMessage', descending: true)
-        .snapshots();
-
-    final streams = StreamGroup.merge([sendBy, sendTo]);
-
-    return streams;
+    return sentBy;
   }
 
   @action

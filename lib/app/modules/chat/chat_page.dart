@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:intl/intl.dart';
-import 'package:photogram/app/constants.dart';
 import 'package:photogram/app/modules/chat/chat_store.dart';
 import 'package:photogram/app/modules/chat/talk_page.dart';
 import 'package:photogram/app/modules/search/searchFiel_widget.dart';
@@ -106,7 +104,7 @@ class ChatPageState extends ModularState<ChatPage, ChatStore> {
 
   late Widget talksWidget = Observer(builder: (_) {
     return StreamBuilder(
-      stream: store.talks,
+      stream: store.talksAll,
       builder: (ctx, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
           log('Erro ao carregar talks: ${snapshot.error}');

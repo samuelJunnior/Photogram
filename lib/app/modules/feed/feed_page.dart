@@ -69,61 +69,61 @@ class FeedPageState extends ModularState<FeedPage, FeedStore> {
           children: [
             Container(
               padding: EdgeInsets.only(top: 10),
-              height: 120,
               child: StreamBuilder(
                 stream: store.stores,
                 builder: (ctx, AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (snapshot.hasError) {
-                    log('Erro ao carregar post: ${snapshot.error}');
-                    return Text('Deu erro');
-                  }
+                  // if (snapshot.hasError) {
+                  //   log('Erro ao carregar store: ${snapshot.error}');
+                  //   return Text('Deu erro');
+                  // }
 
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
-                  }
+                  // if (snapshot.connectionState == ConnectionState.waiting) {
+                  //   return Center(child: CircularProgressIndicator());
+                  // }
 
                   if (snapshot.hasData && snapshot.data!.docs.length > 0) {
                     final stores = snapshot.data!.docs;
-                    return ListView.builder(
-                      controller: _scrollController,
-                      scrollDirection: Axis.horizontal,
-                      itemCount: stores.length,
-                      itemBuilder: (context, index) {
-                        final str = stores[index];
-                        return Align(
-                            alignment: Alignment.topRight,
-                            child: Container(
-                              padding: EdgeInsets.only(left: 12),
-                              child: Row(
-                                children: [
-                                  Column(
-                                    children: [
-                                      CircleAvatar(
-                                        radius: 40,
-                                        child: CircleAvatar(
-                                          radius: 38,
-                                          foregroundImage: NetworkImage(
-                                              str['profilePicture']),
+
+                    return Container(
+                      height: 120,
+                      child: ListView.builder(
+                        controller: _scrollController,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: stores.length,
+                        itemBuilder: (context, index) {
+                          final str = stores[index];
+                          return Align(
+                              alignment: Alignment.topRight,
+                              child: Container(
+                                padding: EdgeInsets.only(left: 12),
+                                child: Row(
+                                  children: [
+                                    Column(
+                                      children: [
+                                        CircleAvatar(
+                                          radius: 40,
+                                          child: CircleAvatar(
+                                            radius: 38,
+                                            foregroundImage: NetworkImage(
+                                                str['profilePicture']),
+                                          ),
                                         ),
-                                      ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      Text(str['owner'])
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ));
-                      },
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        Text(str['owner'])
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ));
+                        },
+                      ),
                     );
                   }
                   return Container();
                 },
               ),
-            ),
-            SizedBox(
-              height: 10,
             ),
             Expanded(
                 child: StreamBuilder(

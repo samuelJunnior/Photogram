@@ -9,13 +9,13 @@ part of 'chat_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$ChatStore on _ChatStoreBase, Store {
-  Computed<Stream<QuerySnapshot<Object?>>>? _$talksComputed;
+  Computed<dynamic>? _$talksAllComputed;
 
   @override
-  Stream<QuerySnapshot<Object?>> get talks => (_$talksComputed ??=
-          Computed<Stream<QuerySnapshot<Object?>>>(() => super.talks,
-              name: '_ChatStoreBase.talks'))
-      .value;
+  dynamic get talksAll =>
+      (_$talksAllComputed ??= Computed<dynamic>(() => super.talksAll,
+              name: '_ChatStoreBase.talksAll'))
+          .value;
 
   final _$myUserAtom = Atom(name: '_ChatStoreBase.myUser');
 
@@ -134,7 +134,7 @@ myUser: ${myUser},
 searchResult: ${searchResult},
 talksResult: ${talksResult},
 error: ${error},
-talks: ${talks}
+talksAll: ${talksAll}
     ''';
   }
 }
